@@ -12,12 +12,12 @@
  */
 
 int shell_exec(void)
-
 {
+	char *prompt = "$ ";
 	size_t n = 10;
 	char *buff = malloc(sizeof(char) * n);
 
-	printf("Enter Command");
+	printf("%s", prompt);
 	getline(&buff, &n, stdin);
 
 	pid_t pid;

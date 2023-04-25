@@ -13,6 +13,5 @@
 
 int shell_exec(void);
 int _execve(char *argv[]);
-int _isalpha(int c);
 
 #endif
