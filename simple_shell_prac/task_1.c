@@ -1,48 +1,28 @@
 #include "shell.h"
-#include <stdio.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <stdarg.h>
-#include <sys/types.h>
-#include <sys/wait.h>
 
 /**
- * shell_exec - executes commands from command prompt
+ * main - function prints a prompt for a command
+ * prompt will be displayed again after command execution
  * Return: pid
  */
 
-int shell_exec(void)
+int main(int argc, char *argv[])
 {
 	char *prompt = "$ ";
-	size_t n = 10;
-	char *buff = malloc(sizeof(char) * n);
+	char *str;
+	size_t n = 0;
+	int var; /* this holds the getline function */
 
-	printf("%s", prompt);
-	getline(&buff, &n, stdin);
+	do {
+		printf("%s", prompt);
+		var = getline(&str, &n, stdin);
 
-	pid_t pid;
+		if (var == -1)
+		{
+			break;
+		}
+	} while (1);
 
-	char *argv[] = {"/bin", "-l", NULL};
-
-	pid = fork();
-
-	if (pid == -1)
-		return (-1);
-
-	if (pid == 0)
-	{
-		int val = execve(argv[0], argv, NULL);
-
-		if (val == -1)
-			perror("Not a command\n");
-	}
-	else
-	{
-		wait(NULL);
-		printf("\n");
-	}
-
-	free(buff);
 
 	return (0);
 }
