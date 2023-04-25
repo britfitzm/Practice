@@ -1,3 +1,4 @@
+#include "shell.h"
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
@@ -21,12 +22,12 @@ int shell_exec(void)
 
 	pid_t pid;
 
-	char *argv[] = ("/bin/ls", "-l", NULL);
+	char *argv[] = {"/bin", "-l", NULL};
 
 	pid = fork();
 
 	if (pid == -1)
-		return -1;
+		return (-1);
 
 	if (pid == 0)
 	{
@@ -41,7 +42,7 @@ int shell_exec(void)
 		printf("\n");
 	}
 
-	free(buff)
+	free(buff);
 
-	return 0;
+	return (0);
 }
