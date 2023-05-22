@@ -11,12 +11,12 @@
 int main(int argc, char *argv[])
 {
 	char *prompt = "$ ";
-	char *str;
+	char *str = NULL;
 	size_t n = 0;
-	int var; /* this holds the getline function */
+	ssize_t var; /*lets use an unsiged in instedd */
 
 	do {
-		printf("%s", prompt);
+		write(STDOUT_FILENO, prompt, strlen(prompt)); /* instead of printf */
 		var = getline(&str, &n, stdin);
 
 		if (var == -1)
@@ -24,25 +24,31 @@ int main(int argc, char *argv[])
 			break;
 		}
 	} while (1);
-
+	free(str); /* freed the memory from getline */
 	pid_t pid;
+	char *filename = "bin/ls";
+	char *cmd_argv[] = {filename, "-1", NULL};
 
-	char *argv[] = {"/usr/bin", "-l", NULL};
+	pid = fork();
 
 	if (pid == -1)
-		return (-1);
+	{
+	perror("fork");
+	return (-1);
+	}
 
-	if (pid == 0)
+	if (pid == 0) /* cd process, fork)*/
 	{
 		int val = execve(filename, argv, NULL);
 
 		if (val == -1)
-			perror("Not Command\n");
+		perror("evecve");
+		return (-1);
 	}
-	else
+	else /* pp from from fork */
 	{
-		printf("\n");
+		waitpid(pid, NULL, 0);	/* cp to finsh */
+		write(STDOUT_FILENO, "\n", 1); /* lets used write */
 	}
-
 	return (0);
 }
